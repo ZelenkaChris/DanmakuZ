@@ -67,7 +67,7 @@ initialize = () => {
 drawPosition = () => {
     ctx.fillStyle = '#fff';
     ctx.filter = "opacity(50%)";
-    ctx.fillRect(0,0, 125, 150);
+    ctx.fillRect(0,0, 125, 175);
     ctx.fillStyle = '#333';
     ctx.filter = "opacity(50%)";
     ctx.font = '20px Arial';
@@ -78,6 +78,7 @@ drawPosition = () => {
     ctx.fillText('Bullets: ' + player.bullets.length, 10, 90);
     ctx.fillText('Mode: ' + player.mode, 10, 115);
     ctx.fillText('Enemies: ' + enemies.length, 10, 140);
+    ctx.fillText('ver: 0.1a', 10, 165);
     ctx.filter = "opacity(100%)";
 }
 
