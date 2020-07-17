@@ -14,8 +14,8 @@ class Enemy extends GameObject {
         );
     }
 
-    move() {
-        this.position.y += moveSpeed;
+    move(timeDelta) {
+        this.position.y += pps * timeDelta / 1000;;
     }
 
 }

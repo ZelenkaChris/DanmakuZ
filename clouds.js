@@ -1,11 +1,13 @@
+let cloudPPS = 144;
+
 class Cloud {
     constructor(position, size) {
         this.position = position;
         this.size = size;
     }
 
-    move() {
-        this.position.y += 1;
+    move(timeDelta) {
+        this.position.y += cloudPPS * timeDelta / 1000;
     }
 
     draw(ctx) {

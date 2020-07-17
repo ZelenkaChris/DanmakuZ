@@ -6,6 +6,8 @@ let isHit = false;
 
 let health = 1;
 
+let pps = 430;
+
 class Player extends GameObject {
     constructor(position, size) {
         super(position, size);
@@ -25,20 +27,20 @@ class Player extends GameObject {
         }
     }
 
-    movement(move) {
+    movement(move, timeDelta) {
         let hori = 0;
         let vert = 0;
 
         if(move[0] && !move[1]) {
-            vert = -movespeed
+            vert = -pps * timeDelta / 1000;
         } else if (!move[0] && move[1]) {
-            vert = movespeed;
+            vert = pps * timeDelta / 1000;
         }
 
         if (move[2] && !move[3]) {
-            hori = -movespeed;
+            hori = -pps * timeDelta / 1000;
         } else if (!move[2] && move[3]) {
-            hori = movespeed;
+            hori = pps * timeDelta / 1000;
         }
 
         this.position.x += hori;

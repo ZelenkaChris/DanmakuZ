@@ -1,4 +1,5 @@
 let bulletSpeed = 5;
+let bulletPPS = 720;
 
 class Bullet extends GameObject {
     constructor(position, size, mode, direction) {
@@ -21,7 +22,7 @@ class Bullet extends GameObject {
     }
 
     move() {
-        this.position.y -= bulletSpeed;
-        this.position.x += bulletSpeed * (this.direction * 3 / 5);
+        this.position.y -= bulletPPS * timeDelta / 1000;
+        this.position.x += bulletPPS * timeDelta / 1000 * (this.direction * 3 / 5);
     }
 }

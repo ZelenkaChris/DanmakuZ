@@ -33,6 +33,10 @@ let clouds = [];
 let lastSpawn, cLastSpawn;
 lastSpawn = cLastSpawn = new Date();
 
+let currentTime = new Date;
+let nextTime;
+let timeDelta = 0;
+
 
 this.addEventListener('keydown', (event) => {
     if( event.key == 'ArrowUp' ||
@@ -68,7 +72,7 @@ drawPosition = () => {
     ctx.filter = "opacity(50%)";
     ctx.font = '20px Arial';
     ctx.textAlign = 'left';
-    ctx.fillText(player.position.x + ', ' + player.position.y, 10, 20);
+    ctx.fillText(Math.floor(player.position.x) + ', ' + Math.floor(player.position.y), 10, 20);
     ctx.fillText(keysHeld.ArrowUp + ', ' + keysHeld.ArrowDown + ', ' + keysHeld.ArrowLeft + ', ' + keysHeld.ArrowRight, 10, 45);
     ctx.fillText(keysHeld.c + ', ' + keysHeld.z, 10, 65);
     ctx.fillText('Bullets: ' + player.bullets.length, 10, 90);
@@ -91,7 +95,7 @@ keys2bits = () => {
 playerStuff = (isOver) => {
     if(!isOver) {
         let keys = keys2bits();
-        player.movement(keys);
+        player.movement(keys, timeDelta);
 
         if(!modeToggle && keys[5]) {
             modeToggle = true;
@@ -116,9 +120,7 @@ playerStuff = (isOver) => {
 }
 
 spawnEnemy = () => {
-    let currentTime = new Date();
-    
-    let timeDelta = Math.abs(currentTime - lastSpawn);
+    let timeDelta = Math.abs(nextTime - lastSpawn);
     if(timeDelta > 640) {
         enemies.push(
             new Enemy(
@@ -177,7 +179,7 @@ checkEnemyHit = (enemy) => {
 
 enemyStuff = () => {
     for(let i=0; i<enemies.length; i++){
-        enemies[i].move();
+        enemies[i].move(timeDelta);
         if(player.checkHit(enemies[i])) {
             player.getHit(gameOver);
         }
@@ -198,11 +200,9 @@ enemyStuff = () => {
 }
 
 
-spawnCloud = () => {
-    let currentTime = new Date();
-    
-    let timeDelta = Math.abs(currentTime - cLastSpawn);
-    if(timeDelta > 3200) {
+spawnCloud = () => {    
+    let spawnDelta = Math.abs(currentTime - cLastSpawn);
+    if(spawnDelta > 3200) {
         clouds.push(
             new Cloud(
                 {
@@ -231,7 +231,7 @@ drawBackground = () => {
             clouds.splice(i, 1);
             i--;
         } else {
-            clouds[i].move();
+            clouds[i].move(timeDelta);
             clouds[i].draw(ctx);
         }
 
@@ -278,6 +278,8 @@ overState = () => {
 
 animate = () => {
     ctx.clearRect(0, 0, 720, 1280);
+    nextTime = new Date();
+    timeDelta = Math.abs(nextTime - currentTime);
 
     switch(gameState) {
         case 'play': 
@@ -289,6 +291,8 @@ animate = () => {
         default:
             break;
     }
+
+    currentTime = nextTime;
 
     requestAnimationFrame(animate);
 }
